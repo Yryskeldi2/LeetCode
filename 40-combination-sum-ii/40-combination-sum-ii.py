@@ -3,7 +3,8 @@ class Solution:
 
         def backtrack(comb, remain, curr, counter, results):
             if remain == 0:
-          
+                # make a deep copy of the current combination
+                #   rather than keeping the reference.
                 results.append(list(comb))
                 return
             elif remain < 0:
@@ -15,19 +16,20 @@ class Solution:
                 if freq <= 0:
                     continue
 
-            
+                # add a new element to the current combination
                 comb.append(candidate)
                 counter[next_curr] = (candidate, freq-1)
 
+                # continue the exploration with the updated combination
                 backtrack(comb, remain - candidate, next_curr, counter, results)
 
-           
+                # backtrack the changes, so that we can try another candidate
                 counter[next_curr] = (candidate, freq)
                 comb.pop()
 
         results = []  # container to hold the final combinations
         counter = Counter(candidates)
-       
+        # convert the counter table to a list of (num, count) tuples
         counter = [(c, counter[c]) for c in counter]
 
         backtrack(comb = [], remain = target, curr = 0,
